@@ -20,3 +20,5 @@ souljapanic microservices repository
 * gcloud compute firewall-rules create reddit-app --allow tcp:9292 --target-tags=docker-machine --description="Allow PUMA connections" --direction=INGRESS
 
 * curl -v http://104.155.110.167:9292
+
+* docker login && docker tag reddit:latest souljapanic/reddit:1.0 && docker push souljapanic/reddit:1.0
