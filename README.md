@@ -34,3 +34,9 @@ souljapanic microservices repository
 * terraform plan
 
 * terraform apply
+
+### Ansible:
+
+* cd docker-monolith/infra/ansible
+
+* ansible-inventory -i inventories/inventory.gcp.yml --graph
