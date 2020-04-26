@@ -12,3 +12,11 @@ souljapanic microservices repository
 * eval $(docker-machine env docker-host)
 
 * docker-machine ssh docker-host
+
+* cd docker-monolith && docker build -t reddit:latest .
+
+* docker run --name reddit -d --network=host reddit:latest
+
+* gcloud compute firewall-rules create reddit-app --allow tcp:9292 --target-tags=docker-machine --description="Allow PUMA connections" --direction=INGRESS
+
+* curl -v http://104.155.110.167:9292
