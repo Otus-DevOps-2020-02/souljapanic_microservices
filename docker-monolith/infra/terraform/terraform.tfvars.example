@@ -1,0 +1,5 @@
+project = "project name"
+public_key_path = "path to public key"
+private_key_path = "path to private key"
+disk_image = "ubuntu-1604-xenial-v20200407"
+countIns = 2

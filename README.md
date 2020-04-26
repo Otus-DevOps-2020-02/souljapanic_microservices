@@ -22,3 +22,15 @@ souljapanic microservices repository
 * curl -v http://104.155.110.167:9292
 
 * docker login && docker tag reddit:latest souljapanic/reddit:1.0 && docker push souljapanic/reddit:1.0
+
+## Дополнительное задание:
+
+### Terraform:
+
+* cd docker-monolith/infra/terraform
+
+* terraform init
+
+* terraform plan
+
+* terraform apply
