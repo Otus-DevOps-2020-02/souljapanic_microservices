@@ -1,0 +1,25 @@
+---
+
+- name: "Install Docker"
+
+  hosts: app
+
+  vars:
+    app_image: "souljapanic/reddit:1.0"
+
+  tasks:
+
+  - name: "Pull an image app"
+    docker_image:
+      name: "{{ app_image }}"
+      source: pull
+
+  - name: "Create container"
+    docker_container:
+      name: "reddit-app-docker"
+      image: "{{ app_image }}"
+      pull: yes
+      state: started
+      detach: true
+      network_mode: host
+      recreate: yes
