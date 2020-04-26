@@ -1,6 +1,12 @@
+# docker images > docker-monolith/docker-1.log
+
 REPOSITORY                    TAG                 IMAGE ID            CREATED              SIZE
 souljapanic/ubuntu-tmp-file   latest              33356a0d6f25        About a minute ago   125MB
 ubuntu                        16.04               005d2078bdfa        2 days ago           125MB
 alpine                        latest              f70734b6a266        2 days ago           5.61MB
 fedora                        latest              536f3995adeb        2 months ago         193MB
 centos                        latest              470671670cac        3 months ago         237MB
+
+# diff
+
+Контейнер это запущенный (может быть так и остановленный) образ с дополнительным слоем для записи, для которого выделено своё окружение (сеть, volume).
