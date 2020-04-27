@@ -1,0 +1,37 @@
+{
+    "variables": {
+        "project_id": "",
+    	"source_image_family": "",
+	"zone": "",
+	"ssh_username": "",
+	"machine_type": "g1-small",
+	"image_description": "",
+	"disk_size": "10",
+	"disk_type": "pd-standard",
+	"network": "default",
+	"tags": ""
+    },
+    "builders": [
+        {
+            "type": "googlecompute",
+            "project_id": "{{user `project_id`}}",
+            "image_name": "ubuntu-1604-docker-{{timestamp}}",
+            "image_family": "ubuntu-1604-docker",
+            "source_image_family": "{{user `source_image_family`}}",
+            "zone": "{{user `zone`}}",
+            "ssh_username": "{{user `ssh_username`}}",
+            "machine_type": "{{user `machine_type`}}",
+	    "image_description": "{{user `image_description`}}",
+	    "disk_size": "{{user `disk_size`}}",
+	    "disk_type": "{{user `disk_type`}}",
+	    "network": "{{user `network`}}",
+	    "tags": "{{user `tags`}}"
+        }
+    ],
+    "provisioners": [
+	{
+            "type": "ansible",
+            "playbook_file": "ansible/packer_docker.yml"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+      "project_id": "<your_project_id>",
+      "source_image_family": "<base_image>",
+      "zone": "<your_zone>",
+      "ssh_username": "<example_user>",
+      "image_description": "example_desc>",
+      "tags": "<example_tag>"
+}

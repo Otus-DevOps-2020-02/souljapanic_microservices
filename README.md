@@ -40,3 +40,11 @@ souljapanic microservices repository
 * cd docker-monolith/infra/ansible
 
 * ansible-inventory -i inventories/inventory.gcp.yml --graph
+
+### Packer:
+
+* cd docker-monolith/infra
+
+* packer validate -var-file=packer/variables.json packer/docker.json
+
+* packer build -var-file=packer/variables.json packer/docker.json
