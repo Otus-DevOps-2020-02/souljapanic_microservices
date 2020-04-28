@@ -1,0 +1,30 @@
+---
+
+- name: "Install Docker"
+
+  hosts: all
+
+  vars:
+    app_user: "den_pirozhkov"
+
+  tasks:
+
+  - name: "Install packages"
+    become: true
+    apt:
+      name: ['docker.io', 'docker-compose']
+      update_cache: yes
+
+  - name: "Appending the group"
+    become: true
+    user:
+      name: "{{ app_user }}"
+      group: docker
+
+  - name: "Restart docker"
+    become: true
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: docker
+      enabled: yes
