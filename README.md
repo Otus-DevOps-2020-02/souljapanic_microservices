@@ -48,3 +48,34 @@ souljapanic microservices repository
 * packer validate -var-file=packer/variables.json packer/docker.json
 
 * packer build -var-file=packer/variables.json packer/docker.json
+
+# docker-3
+
+## Сборка образа:
+
+* post: docker build -t souljapanic/post:1.0 ./src/post-py
+
+* comment: docker build -t souljapanic/comment:1.0 ./src/comment
+
+* ui: docker build -t souljapanic/ui:1.0 ./src/ui
+
+### Комментарии:
+
+```
+Во время сборки используется cache:
+
+Step 2/13 : ARG APP_HOME
+ ---> Using cache
+```
+
+## Запуск:
+
+* создание сети: docker network create reddit
+
+* запуск базы данных: docker run -d --network=reddit --network-alias=post_db --network-alias=comment_db mongo
+
+* запуск post: docker run -d --network=reddit --network-alias=post souljapanic/post:1.0
+
+* запуск comment: docker run -d --network=reddit --network-alias=comment souljapanic/comment:1.0
+
+* запуск ui: docker run -d --network=reddit -p 9292:9292 souljapanic/ui:1.0
