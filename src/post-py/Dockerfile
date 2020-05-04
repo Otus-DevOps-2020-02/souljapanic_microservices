@@ -14,6 +14,4 @@ RUN apk add --no-cache --virtual .build-dependencies build-base=0.4-r1 \
 
 WORKDIR /app
 
-ENTRYPOINT ["python3"]
-
-CMD ["post_app.py"]
+CMD [ "python3", "post_app.py" ]
