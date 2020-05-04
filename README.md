@@ -1,6 +1,8 @@
 # souljapanic_microservices
 souljapanic microservices repository
 
+[![Build Status](https://travis-ci.com/Otus-DevOps-2020-02/souljapanic_microservices.svg?branch=master)](https://travis-ci.com/Otus-DevOps-2020-02/souljapanic_microservices)
+
 # docker-2
 
 ## Создание окружения:
@@ -120,3 +122,19 @@ souljapanic/ui        3.0                 f4391cad1afb        5 minutes ago     
 souljapanic/ui        2.0                 c8e191b7467a        13 minutes ago      436MB
 souljapanic/ui        1.0                 15ec66701638        2 hours ago         775MB
 ```
+
+## Задание с volume:
+
+* остановка (но так делать нельзя!): docker kill $(docker ps -q)
+
+* удаление (и так тоже делать нельзя!): docker rm $(docker ps -a -q)
+
+* создание volume: docker volume create reddit_db
+
+* запуск базы данных: docker run -d --network=reddit --network-alias=post1 --network-alias=comment1 -v reddit_db:/data/db mongo
+
+* запуск post: docker run -d --network=reddit --network-alias=post2 --env-file ./env.list souljapanic/post:1.0
+
+* запуск comment: docker run -d --network=reddit --network-alias=comment2 --env-file ./env.list souljapanic/comment:1.0
+
+* запуск ui: docker run -d --network=reddit -p 9292:9292 --env-file ./env.list souljapanic/ui:1.0
