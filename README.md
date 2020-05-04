@@ -114,13 +114,20 @@ Step 2/13 : ARG APP_HOME
 
 * docker build --no-cache --rm --force-rm -t souljapanic/ui:4.0 -f src/ui/Dockerfile.Alpine ./src/ui
 
+* docker build --no-cache --rm --force-rm -t souljapanic/comment:2.0 -f src/comment/Dockerfile.Alpine ./src/comment
+
 ```
-otus/souljapanic_microservices [docker-3●] » docker images
+otus/souljapanic_microservices [docker-3] » docker images
 REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
 souljapanic/ui        4.0                 c399c74dd555        2 minutes ago       94.2MB
 souljapanic/ui        3.0                 f4391cad1afb        5 minutes ago       303MB
 souljapanic/ui        2.0                 c8e191b7467a        13 minutes ago      436MB
 souljapanic/ui        1.0                 15ec66701638        2 hours ago         775MB
+
+otus/souljapanic_microservices [docker-3] » docker images
+REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
+souljapanic/comment   2.0                 e323c7198fef        30 seconds ago      91.7MB
+souljapanic/comment   1.0                 6e07a9f44efd        3 hours ago         773MB
 ```
 
 ## Задание с volume:
@@ -135,6 +142,6 @@ souljapanic/ui        1.0                 15ec66701638        2 hours ago       
 
 * запуск post: docker run -d --network=reddit --network-alias=post2 --env-file ./env.list souljapanic/post:1.0
 
-* запуск comment: docker run -d --network=reddit --network-alias=comment2 --env-file ./env.list souljapanic/comment:1.0
+* запуск comment: docker run -d --network=reddit --network-alias=comment2 --env-file ./env.list souljapanic/comment:2.0
 
-* запуск ui: docker run -d --network=reddit -p 9292:9292 --env-file ./env.list souljapanic/ui:1.0
+* запуск ui: docker run -d --network=reddit -p 9292:9292 --env-file ./env.list souljapanic/ui:4.0
