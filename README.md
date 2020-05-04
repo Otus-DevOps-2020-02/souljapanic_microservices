@@ -79,3 +79,29 @@ Step 2/13 : ARG APP_HOME
 * запуск comment: docker run -d --network=reddit --network-alias=comment souljapanic/comment:1.0
 
 * запуск ui: docker run -d --network=reddit -p 9292:9292 souljapanic/ui:1.0
+
+## Запуск дополнительное задание:
+
+### 1:
+
+* создание сети: docker network create reddit
+
+* запуск базы данных: docker run -d --network=reddit --network-alias=post1 --network-alias=comment1 mongo
+
+* запуск post: docker run -d -e POST_DATABASE_HOST=post1 --network=reddit --network-alias=post souljapanic/post:1.0
+
+* запуск comment: docker run -d -e COMMENT_DATABASE_HOST=comment1 --network=reddit --network-alias=comment souljapanic/comment:1.0
+
+* запуск ui: docker run -d --network=reddit -p 9292:9292 souljapanic/ui:1.0
+
+### 2:
+
+* создание сети: docker network create reddit
+
+* запуск базы данных: docker run -d --network=reddit --network-alias=post1 --network-alias=comment1 mongo
+
+* запуск post: docker run -d --network=reddit --network-alias=post2 --env-file ./env.list souljapanic/post:1.0
+
+* запуск comment: docker run -d --network=reddit --network-alias=comment2 --env-file ./env.list souljapanic/comment:1.0
+
+* запуск ui: docker run -d --network=reddit -p 9292:9292 --env-file ./env.list souljapanic/ui:1.0
