@@ -8,8 +8,10 @@ ENV APP_HOME=${APP_HOME:-'/app'} \
     COMMENT_DATABASE_HOST=${COMMENT_DATABASE_HOST:-'comment_db'} \
     COMMENT_DATABASE=${COMMENT_DATABASE:-'comments'}
 
-RUN apt-get update -qq \
-    && apt-get install -y build-essential
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential=11.7 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR $APP_HOME
 
