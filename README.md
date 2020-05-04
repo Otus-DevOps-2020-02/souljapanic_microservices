@@ -59,6 +59,8 @@ souljapanic microservices repository
 
 * ui: docker build -t souljapanic/ui:1.0 ./src/ui
 
+* ui: docker build -t souljapanic/ui:2.0 -f src/ui/Dockerfile.Ubuntu ./src/ui
+
 ### Комментарии:
 
 ```
