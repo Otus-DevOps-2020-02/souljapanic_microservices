@@ -174,3 +174,25 @@ d5c661bff608        front_net           bridge              local
 * запуск базы данных: docker run -d --network=back_net --name mongo_db --network-alias=post_db --network-alias=comment_db mongo
 
 * добавление контейнера в сеть: docker network connect front_net post && docker network connect front_net comment
+
+## Сборка с помощью docker-compose:
+
+* cd src/
+
+* ui: docker-compose -f docker-compose.yml build ui
+
+* post: docker-compose -f docker-compose.yml build post
+
+* comment: docker-compose -f docker-compose.yml build comment
+
+## Запуск проекта с помощью docker-compose:
+
+* cd src/
+
+* docker-compose up -d
+
+```
+В файле .env указана переменная COMPOSE_PROJECT_NAME для наименования контейнеров запускаемых через docker-compose
+```
+
+```
