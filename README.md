@@ -195,4 +195,12 @@ d5c661bff608        front_net           bridge              local
 В файле .env указана переменная COMPOSE_PROJECT_NAME для наименования контейнеров запускаемых через docker-compose
 ```
 
-```
+## Использование docker-compose.override.yml:
+
+* cd src/
+
+* docker-machine scp -r ui/ docker-host:/home/docker-user/ui
+
+* docker-machine scp -r comment/ docker-host:/home/docker-user/comment
+
+* docker-compose up -d

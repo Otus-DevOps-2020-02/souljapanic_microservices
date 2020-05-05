@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+
+  ui:
+    command: 'puma --debug -w 2'
+    volumes:
+      - /home/docker-user/ui:${APP_HOME_UI}
+
+  comment:
+    command: 'puma --debug -w 2'
+    volumes:
+      - /home/docker-user/comment:${APP_HOME_COMMENT}
