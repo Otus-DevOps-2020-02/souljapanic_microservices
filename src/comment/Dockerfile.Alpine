@@ -1,0 +1,23 @@
+FROM ruby:2.5-alpine3.7
+
+ARG APP_HOME
+ARG COMMENT_DATABASE_HOST
+ARG COMMENT_DATABASE
+
+ENV APP_HOME=${APP_HOME:-'/app'} \
+    COMMENT_DATABASE_HOST=${COMMENT_DATABASE_HOST:-'comment_db'} \
+    COMMENT_DATABASE=${COMMENT_DATABASE:-'comments'}
+
+WORKDIR $APP_HOME
+
+COPY Gemfile* $APP_HOME/
+
+RUN apk add --no-cache --virtual .build-dependencies \
+    automake autoconf build-base gmp-dev ruby-dev \
+    libc-dev libtool libxml2-dev libxslt-dev linux-headers \
+    && bundle install --no-cache \
+    && apk del .build-dependencies
+
+COPY . $APP_HOME/
+
+CMD ["puma"]
