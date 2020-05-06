@@ -1,0 +1,90 @@
+# version: '3.7'
+version: '3.3'
+
+services:
+
+  mongo:
+    image: mongo:${MONGO_VERSION}
+    restart: always
+    # container_name: app-mongo
+    volumes:
+      - post_db:/data/db
+    networks:
+      reddit:
+        aliases:
+          - ${POST_DATABASE_HOST}
+          - ${COMMENT_DATABASE_HOST}
+
+  ui:
+    build:
+      context: ./ui/.
+      dockerfile: ./Dockerfile.Alpine
+      args:
+        APP_HOME: "${APP_HOME_UI}"
+        POST_SERVICE_HOST: "${POST_SERVICE_HOST}"
+        POST_SERVICE_PORT: "${POST_SERVICE_PORT}"
+        COMMENT_SERVICE_HOST: "${COMMENT_SERVICE_HOST}"
+        COMMENT_SERVICE_PORT: "${COMMENT_SERVICE_PORT}"
+    image: ${USERNAME_REGISTRY}/ui:${UI_VERSION}
+    restart: always
+    # container-name: app-ui
+    networks:
+      - reddit
+    environment:
+      APP_HOME: "${APP_HOME_UI}"
+      POST_SERVICE_HOST: "${POST_SERVICE_HOST}"
+      POST_SERVICE_PORT: "${POST_SERVICE_PORT}"
+      COMMENT_SERVICE_HOST: "${COMMENT_SERVICE_HOST}"
+      COMMENT_SERVICE_PORT: "${COMMENT_SERVICE_PORT}"
+    ports:
+      - "${PUBLISH_PORT_UI}:${COMMENT_SERVICE_PORT}"
+    depends_on:
+      - mongo
+
+  post:
+    build:
+      context: ./post-py/.
+      dockerfile: ./Dockerfile
+      args:
+        POST_DATABASE_HOST: "${POST_DATABASE_HOST}"
+        POST_DATABASE: "${POST_DATABASE}"
+    image: ${USERNAME_REGISTRY}/post:${POST_VERSION}
+    restart: always
+    # container-name: app-post
+    networks:
+      reddit:
+        aliases:
+          - ${POST_SERVICE_HOST}
+    environment:
+      POST_DATABASE_HOST: "${POST_DATABASE_HOST}"
+      POST_DATABASE: "${POST_DATABASE}"
+    depends_on:
+      - mongo
+
+  comment:
+    build:
+      context: ./comment/.
+      dockerfile: ./Dockerfile.Alpine
+      args:
+        APP_HOME: "${APP_HOME_COMMENT}"
+        COMMENT_DATABASE_HOST: "${COMMENT_DATABASE_HOST}"
+        COMMENT_DATABASE: "${COMMENT_DATABASE}"
+    image: ${USERNAME_REGISTRY}/comment:${COMMENT_VERSION}
+    restart: always
+    # container-name: app-comment
+    networks:
+      reddit:
+        aliases:
+          - ${COMMENT_SERVICE_HOST}
+    environment:
+      APP_HOME: "${APP_HOME_COMMENT}"
+      COMMENT_DATABASE_HOST: "${COMMENT_DATABASE_HOST}"
+      COMMENT_DATABASE: "${COMMENT_DATABASE}"
+    depends_on:
+      - mongo
+
+volumes:
+  post_db:
+
+networks:
+  reddit:

@@ -145,3 +145,62 @@ souljapanic/comment   1.0                 6e07a9f44efd        3 hours ago       
 * запуск comment: docker run -d --network=reddit --network-alias=comment2 --env-file ./env.list souljapanic/comment:2.0
 
 * запуск ui: docker run -d --network=reddit -p 9292:9292 --env-file ./env.list souljapanic/ui:4.0
+
+# docker-4
+
+## Запуск:
+
+* создание сети: docker network create back_net --subnet=10.0.2.0/24
+
+* создание сети: docker network create front_net --subnet=10.0.1.0/24
+
+```
+otus/souljapanic_microservices [docker-4] » docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+4a6cf33e65f5        back_net            bridge              local
+3121f4923429        bridge              bridge              local
+d5c661bff608        front_net           bridge              local
+2d12c09b3fbe        host                host                local
+8cad84a97367        none                null                local
+120368c0a3cc        reddit              bridge              local
+```
+
+* запуск ui: docker run -d --network=front_net -p 9292:9292 --name ui souljapanic/ui:4.0
+
+* запуск comment: docker run -d --network=back_net --name comment souljapanic/comment:2.0
+
+* запуск post: docker run -d --network=back_net --name post souljapanic/post:1.0
+
+* запуск базы данных: docker run -d --network=back_net --name mongo_db --network-alias=post_db --network-alias=comment_db mongo
+
+* добавление контейнера в сеть: docker network connect front_net post && docker network connect front_net comment
+
+## Сборка с помощью docker-compose:
+
+* cd src/
+
+* ui: docker-compose -f docker-compose.yml build ui
+
+* post: docker-compose -f docker-compose.yml build post
+
+* comment: docker-compose -f docker-compose.yml build comment
+
+## Запуск проекта с помощью docker-compose:
+
+* cd src/
+
+* docker-compose up -d
+
+```
+В файле .env указана переменная COMPOSE_PROJECT_NAME для наименования контейнеров запускаемых через docker-compose
+```
+
+## Использование docker-compose.override.yml:
+
+* cd src/
+
+* docker-machine scp -r ui/ docker-host:/home/docker-user/ui
+
+* docker-machine scp -r comment/ docker-host:/home/docker-user/comment
+
+* docker-compose up -d
