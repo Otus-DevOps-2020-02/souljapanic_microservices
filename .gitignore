@@ -5,3 +5,4 @@
 docker-monolith/infra/terraform/.terraform
 docker-monolith/infra/packer/variables.json
 src/.env
+machine-gitlab/terraform/.terraform

@@ -204,3 +204,28 @@ d5c661bff608        front_net           bridge              local
 * docker-machine scp -r comment/ docker-host:/home/docker-user/comment
 
 * docker-compose up -d
+
+# gitlab-ci-1
+
+## Подготовка окружения:
+
+* Заказ машины:
+
+```
+cd machine-gitlab/terraform
+
+terraform init
+
+terraform plan
+
+terraform apply
+
+```
+
+* Установка dockerd:
+
+```
+cd machine-gitlab/ansible
+
+ansible-playbook -i inventory.gcp.yml docker.yml
+```
