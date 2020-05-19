@@ -41,26 +41,13 @@ resource "google_compute_instance" "app" {
   }
 }
 
-resource "google_compute_firewall" "firewall_gitlab_web" {
-  name    = "allow-gitlab-web"
-  network = "default"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["8000"]
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["gitlab-app"]
-}
-
 resource "google_compute_firewall" "firewall_gitlab_ssh" {
   name    = "allow-gitlab-ssh"
   network = "default"
 
   allow {
     protocol = "tcp"
-    ports    = ["8022"]
+    ports    = ["2222"]
   }
 
   source_ranges = ["0.0.0.0/0"]

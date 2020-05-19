@@ -229,3 +229,11 @@ cd machine-gitlab/ansible
 
 ansible-playbook -i inventory.gcp.yml docker.yml
 ```
+
+* Запуск GitLab:
+
+```
+cd machine-gitlab/ansible
+
+ansible-playbook -i inventory.gcp.yml gitlab.yml
+```

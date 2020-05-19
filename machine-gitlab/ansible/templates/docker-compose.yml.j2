@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    container_name: gitlab
+    hostname:  {{ ansible_hostname }}
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://{{ ipaddr | default('34.78.224.181') }}'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '2222:22'
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
