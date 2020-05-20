@@ -237,3 +237,11 @@ cd machine-gitlab/ansible
 
 ansible-playbook -i inventory.gcp.yml gitlab.yml
 ```
+
+* Загрузка проекта в GitLab:
+
+```
+git remote add gitlab ssh://git@34.78.224.181:2222/homework/example.git
+
+git push gitlab gitlab-ci-1
+```
