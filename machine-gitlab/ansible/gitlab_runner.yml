@@ -1,0 +1,28 @@
+---
+
+- name: "Run GitLab Runner"
+
+  hosts: app
+
+  tasks:
+
+  - name: "Create dirs"
+    become: true
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0777'
+    with_items:
+      - "/srv/gitlab-runner/config"
+
+  - name: "Copy template"
+    template:
+      src: "docker-compose-runner.yml.j2"
+      dest: "/srv/gitlab-runner/docker-compose.yml"
+      mode: '0755'
+      backup: yes
+
+  - name: "Run GitLab"
+    shell: "docker-compose up -d"
+    args:
+      chdir: "/srv/gitlab-runner"
