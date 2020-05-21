@@ -13,12 +13,14 @@ variables:
 before_script:
   - cd reddit
   - bundle install
+  - echo $CI_PROJECT_DIR
+  - cd $CI_PROJECT_DIR
 
 build_job:
   stage: build
   script:
     - echo 'Building'
-    - cd docker-monolith
+    - cd $CI_PROJECT_DIR/docker-monolith
     - docker build --no-cache --rm --force-rm -t souljapanic/reddit:$CI_COMMIT_REF_NAME -f Dockerfile .
 
 test_unit_job:
