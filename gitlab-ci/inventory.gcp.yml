@@ -1,0 +1,18 @@
+plugin: gcp_compute
+projects:
+  - "docker-275410"
+regions:
+  - "europe-west1"
+zones:
+  - "europe-west1-d"
+filters: []
+auth_kind: serviceaccount
+service_account_file: "~/docker-275410.json"
+hostnames:
+  - name
+keyed_groups:
+  - key: zone
+groups:
+  app: "'gitlab-app' in name"
+compose:
+  ansible_host: networkInterfaces[0].accessConfigs[0].natIP

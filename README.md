@@ -245,3 +245,15 @@ git remote add gitlab ssh://git@34.78.224.181:2222/homework/example.git
 
 git push gitlab gitlab-ci-1
 ```
+
+## Установка GitLab и запуск GitLab Runner с помощью ansible:
+
+* cd gitlab-ci/
+
+* ansible-playbook -i inventory.gcp.yml gitlab.yml
+
+* ansible-playbook -i inventory.gcp.yml gitlab_runner.yml
+
+## Ссылка на канал уведомления в Slack:
+
+* https://devops-team-otus.slack.com/archives/CV4QKMVMX

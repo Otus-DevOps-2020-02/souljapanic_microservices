@@ -1,0 +1,32 @@
+---
+
+- name: "Install GitLab"
+
+  hosts: app
+
+  tasks:
+
+  - name: "Create dirs"
+    become: true
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0777'
+    with_items:
+      - "/srv/gitlab/config"
+      - "/srv/gitlab/data"
+      - "/srv/gitlab/logs"
+
+  - name: "Copy template"
+    template:
+      src: "{{ item }}"
+      dest: "/srv/gitlab/{{ item[0:-3] | basename }}"
+      mode: '0755'
+      backup: yes
+    with_fileglob:
+      - "templates/*.j2"
+
+  - name: "Run GitLab"
+    shell: "docker-compose up -d"
+    args:
+      chdir: "/srv/gitlab"
