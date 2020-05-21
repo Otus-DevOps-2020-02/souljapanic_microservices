@@ -18,6 +18,8 @@ build_job:
   stage: build
   script:
     - echo 'Building'
+    - cd docker-monolith
+    - docker build --no-cache --rm --force-rm -t souljapanic/reddit:$CI_COMMIT_REF_NAME -f Dockerfile .
 
 test_unit_job:
   stage: test
