@@ -31,6 +31,14 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
 
+  mongodb-exporter:
+    image: souljapanic/mongodb_exporter
+    restart: always
+    networks:
+      - reddit
+    environment:
+      MONGODB_URI: "mongodb://mongo:27017"
+
   mongo:
     image: mongo:${MONGO_VERSION}
     restart: always
