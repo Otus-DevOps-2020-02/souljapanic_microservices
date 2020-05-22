@@ -299,3 +299,7 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 * cd src/comment && bash docker_build.sh
 
 * cd docker && docker-compose up -d
+
+## Ссылка на репозиторий:
+
+* https://hub.docker.com/u/souljapanic
