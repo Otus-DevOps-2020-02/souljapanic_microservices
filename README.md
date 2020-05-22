@@ -304,7 +304,7 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 
 * https://hub.docker.com/u/souljapanic
 
-## mongodb exporter:
+## mongodb exporter (взят экспортер https://github.com/percona/mongodb_exporter, собирается свой образ):
 
 * cd monitoring/mongodb_exporter
 
@@ -312,8 +312,18 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 
 * cd docker && docker-compose up -d
 
-## blackbox:
+## blackbox (используется модуль http, собирается свой образ):
 
 * cd monitoring/blackbox
 
 * cd docker && docker-compose up -d
+
+## Makefile (реализован только для образа prometheus)
+
+* cd monitoring/prometheus
+
+* make build
+
+* make push
+
+* build_and_push
