@@ -1,0 +1,77 @@
+version: '3.3'
+
+services:
+
+  prometheus:
+    image: souljapanic/prometheus
+    restart: always
+    networks:
+      - reddit
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d'
+
+  mongo:
+    image: mongo:${MONGO_VERSION}
+    restart: always
+    volumes:
+      - post_db:/data/db
+    networks:
+      reddit:
+        aliases:
+          - ${POST_DATABASE_HOST}
+          - ${COMMENT_DATABASE_HOST}
+
+  ui:
+    image: souljapanic/ui
+    restart: always
+    networks:
+      - reddit
+    environment:
+      POST_SERVICE_HOST: "${POST_SERVICE_HOST}"
+      POST_SERVICE_PORT: "${POST_SERVICE_PORT}"
+      COMMENT_SERVICE_HOST: "${COMMENT_SERVICE_HOST}"
+      COMMENT_SERVICE_PORT: "${COMMENT_SERVICE_PORT}"
+    ports:
+      - "${PUBLISH_PORT_UI}:${COMMENT_SERVICE_PORT}"
+    depends_on:
+      - mongo
+
+  post:
+    image: souljapanic/post
+    restart: always
+    networks:
+      reddit:
+        aliases:
+          - ${POST_SERVICE_HOST}
+    environment:
+      POST_DATABASE_HOST: "${POST_DATABASE_HOST}"
+      POST_DATABASE: "${POST_DATABASE}"
+    depends_on:
+      - mongo
+
+  comment:
+    image: souljapanic/comment
+    restart: always
+    networks:
+      reddit:
+        aliases:
+          - ${COMMENT_SERVICE_HOST}
+    environment:
+      APP_HOME: "${APP_HOME_COMMENT}"
+      COMMENT_DATABASE_HOST: "${COMMENT_DATABASE_HOST}"
+      COMMENT_DATABASE: "${COMMENT_DATABASE}"
+    depends_on:
+      - mongo
+
+volumes:
+  prometheus_data:
+  post_db:
+
+networks:
+  reddit:

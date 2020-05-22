@@ -257,3 +257,45 @@ git push gitlab gitlab-ci-1
 ## Ссылка на канал уведомления в Slack:
 
 * https://devops-team-otus.slack.com/archives/CV4QKMVMX
+
+# monitoring-1
+
+## Создание окружения:
+
+* export GOOGLE_PROJECT=docker-275410
+
+* docker-machine create --driver google --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts --google-machine-type n1-standard-1 --google-zone europe-west1-b docker-host
+
+* eval $(docker-machine env docker-host)
+
+* gcloud compute firewall-rules create prometheus-default --allow tcp:9090 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create puma-default --allow tcp:9292 --target-tags=docker-machine
+
+## Запуск Prometheus:
+
+* docker run --rm -p 9090:9090 -d --name prometheus prom/prometheus:v2.1.0
+
+* Проверка работоспособности:
+
+```
+~ » docker ps
+CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                    NAMES
+58f75b11b471        prom/prometheus:v2.1.0   "/bin/prometheus --c…"   35 seconds ago      Up 33 seconds       0.0.0.0:9090->9090/tcp   prometheus
+```
+
+## Сборка Docker образов:
+
+* cd monitoring/prometheus
+
+* docker build --rm --no-cache -t souljapanic/prometheus .
+
+* export USER_NAME=souljapanic
+
+* cd src/ui && bash docker_build.sh
+
+* cd src/post-py && bash docker_build.sh
+
+* cd src/comment && bash docker_build.sh
+
+* cd docker && docker-compose up -d
