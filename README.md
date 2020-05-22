@@ -303,3 +303,11 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 ## Ссылка на репозиторий:
 
 * https://hub.docker.com/u/souljapanic
+
+## mongodb exporter:
+
+* cd monitoring/mongodb_exporter
+
+* docker build --rm -t souljapanic/mongodb_exporter .
+
+* cd docker && docker-compose up -d
