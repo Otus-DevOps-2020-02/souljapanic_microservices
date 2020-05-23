@@ -49,6 +49,9 @@ services:
 
   cadvisor:
     image: google/cadvisor:v0.29.0
+    restart: always
+    networks:
+      - reddit
     volumes:
       - '/:/rootfs:ro'
       - '/var/run:/var/run:rw'
