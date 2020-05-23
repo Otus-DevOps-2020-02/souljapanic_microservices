@@ -359,3 +359,7 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 * cd monitoring/alertmanager
 
 * docker build --rm --no-cache -t souljapanic/alertmanager .
+
+## Ссылка на репозиторий:
+
+* https://hub.docker.com/u/souljapanic
