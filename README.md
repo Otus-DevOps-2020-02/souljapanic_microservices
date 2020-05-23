@@ -327,3 +327,25 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 * make push
 
 * build_and_push
+
+# monitoring-2
+
+## Создание окружения:
+
+* export GOOGLE_PROJECT=docker-275410
+
+* docker-machine create --driver google --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts --google-machine-type n1-standard-1 --google-zone europe-west1-b docker-host
+
+* eval $(docker-machine env docker-host)
+
+* gcloud compute firewall-rules create prometheus-default --allow tcp:9090 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create puma-default --allow tcp:9292 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create cadvisor-default --allow tcp:8080 --target-tags=docker-machine
+
+## Описание файлов:
+
+* Файл с описание приложений: docker/docker-compose.yml
+
+* Файл с описанием мониторинга: docker/docker-compose-monitoring.yml
