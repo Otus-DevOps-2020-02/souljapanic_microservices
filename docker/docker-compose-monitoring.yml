@@ -75,6 +75,16 @@ services:
     ports:
       - 3000:3000
 
+  alertmanager:
+    image: souljapanic/alertmanager
+    restart: always
+    networks:
+      - reddit
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+    ports:
+      - 9093:9093
+
 volumes:
   prometheus_data:
   grafana_data:

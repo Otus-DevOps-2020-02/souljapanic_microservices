@@ -346,8 +346,16 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 
 * gcloud compute firewall-rules create grafana-default --allow tcp:3000 --target-tags=docker-machine
 
+* gcloud compute firewall-rules create alertmanager-default --allow tcp:9093 --target-tags=docker-machine
+
 ## Описание файлов:
 
 * Файл с описание приложений: docker/docker-compose.yml
 
 * Файл с описанием мониторинга: docker/docker-compose-monitoring.yml
+
+## Сборка образа AlertManager:
+
+* cd monitoring/alertmanager
+
+* docker build --rm --no-cache -t souljapanic/alertmanager .
