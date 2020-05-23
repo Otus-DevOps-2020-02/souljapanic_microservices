@@ -344,6 +344,8 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 
 * gcloud compute firewall-rules create cadvisor-default --allow tcp:8080 --target-tags=docker-machine
 
+* gcloud compute firewall-rules create grafana-default --allow tcp:3000 --target-tags=docker-machine
+
 ## Описание файлов:
 
 * Файл с описание приложений: docker/docker-compose.yml
