@@ -204,3 +204,56 @@ d5c661bff608        front_net           bridge              local
 * docker-machine scp -r comment/ docker-host:/home/docker-user/comment
 
 * docker-compose up -d
+
+# gitlab-ci-1
+
+## Подготовка окружения:
+
+* Заказ машины:
+
+```
+cd machine-gitlab/terraform
+
+terraform init
+
+terraform plan
+
+terraform apply
+
+```
+
+* Установка dockerd:
+
+```
+cd machine-gitlab/ansible
+
+ansible-playbook -i inventory.gcp.yml docker.yml
+```
+
+* Запуск GitLab:
+
+```
+cd machine-gitlab/ansible
+
+ansible-playbook -i inventory.gcp.yml gitlab.yml
+```
+
+* Загрузка проекта в GitLab:
+
+```
+git remote add gitlab ssh://git@34.78.224.181:2222/homework/example.git
+
+git push gitlab gitlab-ci-1
+```
+
+## Установка GitLab и запуск GitLab Runner с помощью ansible:
+
+* cd gitlab-ci/
+
+* ansible-playbook -i inventory.gcp.yml gitlab.yml
+
+* ansible-playbook -i inventory.gcp.yml gitlab_runner.yml
+
+## Ссылка на канал уведомления в Slack:
+
+* https://devops-team-otus.slack.com/archives/CV4QKMVMX

@@ -1,0 +1,86 @@
+image: ruby:2.4.2
+
+stages:
+  - build
+  - test
+  - review
+  - stage
+  - production
+
+variables:
+  DATABASE_URL: 'mongodb://mongo/user_posts'
+
+before_script:
+  - cd reddit
+  - bundle install
+  - cd $CI_PROJECT_DIR
+  - apt-get update
+  - apt-get -y install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+  - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+  - apt-key fingerprint 0EBFCD88
+  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+  - apt-get update
+  - apt-get -y install docker-ce
+  - docker info
+
+build_job:
+  stage: build
+  script:
+    - echo 'Building'
+    - echo $CI_PROJECT_DIR
+    - cd $CI_PROJECT_DIR/docker-monolith
+    - docker build --no-cache --rm --force-rm -t souljapanic/reddit:$CI_COMMIT_REF_NAME -f Dockerfile .
+
+test_unit_job:
+  stage: test
+  services:
+    - mongo:latest
+  script:
+    - cd $CI_PROJECT_DIR/reddit
+    - ruby simpletest.rb
+
+test_integration_job:
+  stage: test
+  script:
+    - echo 'Testing 2'
+
+deploy_dev_job:
+  stage: review
+  script:
+    - echo 'Deploy'
+  environment:
+    name: dev
+    url: http://dev.example.com
+
+branch review:
+  stage: review
+  script: echo "Deploy to $CI_ENVIRONMENT_SLUG"
+  environment:
+    name: branch/$CI_COMMIT_REF_NAME
+    url: http://$CI_ENVIRONMENT_SLUG.example.com
+  only:
+    - branches
+  except:
+    - master
+
+staging:
+  stage: stage
+  when: manual
+  only:
+    - /^\d+\.\d+\.\d+/
+  script:
+    - echo 'Deploy'
+  environment:
+    name: stage
+    url: https://beta.example.com
+
+production:
+  stage: production
+  when: manual
+  only:
+    - /^\d+\.\d+\.\d+/
+  script:
+    - echo 'Deploy'
+  environment:
+    name: production
+    url: https://example.com

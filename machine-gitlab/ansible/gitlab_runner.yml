@@ -1,0 +1,31 @@
+---
+
+- name: "Run GitLab Runner"
+
+  hosts: app
+
+  tasks:
+
+  - name: "Create dirs"
+    become: true
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0777'
+    with_items:
+      - "/srv/gitlab-runner/config"
+
+  - name: "Copy template"
+    template:
+      src: "docker-compose-runner.yml.j2"
+      dest: "/srv/gitlab-runner/docker-compose.yml"
+      mode: '0755'
+      backup: yes
+
+  - name: "Run GitLab"
+    shell: "docker-compose up -d"
+    args:
+      chdir: "/srv/gitlab-runner"
+
+  - name: "Register Runner"
+    shell: "docker exec gitlab-runner gitlab-runner register -n --url http://{{ ipaddr | default('34.78.224.181') }}/ --registration-token {{ token_runner | default('9966z9V66Sjx1xBXQgwJ') }} --executor docker --description \"My Docker Runner\" --docker-image \"docker:19.03.8\" --docker-volumes /var/run/docker.sock:/var/run/docker.sock"
