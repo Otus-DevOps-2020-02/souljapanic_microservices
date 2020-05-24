@@ -95,6 +95,22 @@ services:
     ports:
       - 9126:9126
 
+  stackdriver-exporter:
+    image: souljapanic/stackdriver-exporter
+    restart: always
+    networks:
+      - reddit
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: "/opt/docker-275410.json"
+      STACKDRIVER_EXPORTER_GOOGLE_PROJECT_ID: "docker-275410"
+      STACKDRIVER_EXPORTER_MONITORING_METRICS_TYPE_PREFIXES: "compute.googleapis.com/instance/cpu,compute.googleapis.com/instance/disk"
+      STACKDRIVER_EXPORTER_MONITORING_METRICS_INTERVAL: "1m"
+      STACKDRIVER_EXPORTER_MONITORING_METRICS_OFFSET: "0s"
+      STACKDRIVER_EXPORTER_WEB_LISTEN_ADDRESS: ":9255"
+      STACKDRIVER_EXPORTER_WEB_TELEMETRY_PATH: "/metrics"
+    ports:
+      - 9255:9255
+
 volumes:
   prometheus_data:
   grafana_data:

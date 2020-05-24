@@ -352,6 +352,8 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 
 * gcloud compute firewall-rules create telegraf-default --allow tcp:9126 --target-tags=docker-machine
 
+* gcloud compute firewall-rules create stackdriver-default --allow tcp:9255 --target-tags=docker-machine
+
 * Создание сети:
 
 ```
@@ -414,4 +416,22 @@ usm.json - dashboards UI Service Monitoring
 prometheus.yml - настройка datasource prometheus
 
 prometheus_dashboards.yml - dashboard provider
+```
+
+* Сборка stackdriver-exporter:
+
+```
+cd monitoring/stackdriver-exporter
+
+В контейнер подкладываем service_account от проекта в GCP и выполняем сборку (так делать нельзя, это для примера!)
+
+docker build --rm --no-cache -t souljapanic/stackdriver-exporter .
+
+Выполняется сбор следующих метрик:
+
+- compute.googleapis.com/instance/cpu
+- compute.googleapis.com/instance/disk
+
+За основу взят exporter: https://github.com/prometheus-community/stackdriver_exporter
+Пример метрик: https://cloud.google.com/monitoring/api/metrics
 ```
