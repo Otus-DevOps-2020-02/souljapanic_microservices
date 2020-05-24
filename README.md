@@ -363,3 +363,11 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 ## Ссылка на репозиторий:
 
 * https://hub.docker.com/u/souljapanic
+
+## Дополнительные задания:
+
+* Сборка Prometheus и Alertmanagers:
+
+```
+cd monitoring && make build_and_push
+```
