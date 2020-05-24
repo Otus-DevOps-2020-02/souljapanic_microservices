@@ -111,9 +111,21 @@ services:
     ports:
       - 9255:9255
 
+  trickster:
+    image: souljapanic/trickster
+    restart: always
+    networks:
+      - reddit
+    ports:
+      - 8480:8480
+      - 8481:8481
+    volumes:
+      - data_trickster:/data/trickster
+
 volumes:
   prometheus_data:
   grafana_data:
+  data_trickster:
 
 networks:
   reddit:

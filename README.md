@@ -435,3 +435,17 @@ docker build --rm --no-cache -t souljapanic/stackdriver-exporter .
 За основу взят exporter: https://github.com/prometheus-community/stackdriver_exporter
 Пример метрик: https://cloud.google.com/monitoring/api/metrics
 ```
+
+* Сборка trickster:
+
+```
+cd monitoring/trickster
+
+docker build --rm --no-cache -t souljapanic/trickster .
+
+Конфигураия trickster описана в файле trickster.conf, используется cache в памяти для prometheus
+
+Добавлен сбор метрик с trickster в prometheus
+
+В Grafana добавлен в provision доступ к prometheus через trickster
+```
