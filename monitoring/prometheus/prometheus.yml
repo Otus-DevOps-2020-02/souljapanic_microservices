@@ -75,3 +75,8 @@ scrape_configs:
     static_configs:
       - targets:
         - 'telegraf:9126'
+
+  - job_name: 'stackdriver'
+    static_configs:
+      - targets:
+        - 'stackdriver-exporter:9255'
