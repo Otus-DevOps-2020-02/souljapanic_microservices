@@ -388,3 +388,22 @@ cd monitoring && make build_and_push
 cd monitoring/telegraf
 docker build --rm --no-cache -t souljapanic/telegraf .
 ```
+
+* Сборка образа grafana с настроенными dashboards и datasources:
+
+```
+cd monitoring/grafana
+docker build --rm --no-cache -t souljapanic/grafana .
+
+dm.json - dashboard docker metrics prometheus
+
+telegraf.json - dashboard docker metrics telegraf
+
+blm.json - dashboard Business Logic Monitoring
+
+usm.json - dashboards UI Service Monitoring
+
+prometheus.yml - настройка datasource prometheus
+
+prometheus_dashboards.yml - dashboard provider
+```

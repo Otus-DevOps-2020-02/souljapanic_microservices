@@ -61,7 +61,7 @@ services:
       - '8080:8080'
 
   grafana:
-    image: grafana/grafana:5.0.0
+    image: souljapanic/grafana
     restart: always
     networks:
       - reddit
