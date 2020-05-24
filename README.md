@@ -376,10 +376,18 @@ docker network create reddit
 
 ## Дополнительные задания:
 
-* Сборка Prometheus и Alertmanagers:
+* Сборка Prometheus и Alertmanagers с помощью makefile:
 
 ```
 cd monitoring && make build_and_push
+```
+
+* Настройка уведомления для процентиль:
+
+```
+cd prometheus
+
+alerts.yml - описание правил уведомления
 ```
 
 * Сборка образа telegraf
