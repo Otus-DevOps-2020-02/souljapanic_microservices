@@ -348,6 +348,14 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 
 * gcloud compute firewall-rules create alertmanager-default --allow tcp:9093 --target-tags=docker-machine
 
+* gcloud compute firewall-rules create metrics-default --allow tcp:9323 --target-tags=docker-machine
+
+* Создание сети:
+
+```
+docker network create reddit
+```
+
 ## Описание файлов:
 
 * Файл с описание приложений: docker/docker-compose.yml

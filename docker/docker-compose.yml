@@ -60,3 +60,5 @@ volumes:
 
 networks:
   reddit:
+    external:
+      name: reddit
