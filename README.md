@@ -350,6 +350,8 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 
 * gcloud compute firewall-rules create metrics-default --allow tcp:9323 --target-tags=docker-machine
 
+* gcloud compute firewall-rules create telegraf-default --allow tcp:9126 --target-tags=docker-machine
+
 * Создание сети:
 
 ```
@@ -378,4 +380,11 @@ docker network create reddit
 
 ```
 cd monitoring && make build_and_push
+```
+
+* Сборка образа telegraf
+
+```
+cd monitoring/telegraf
+docker build --rm --no-cache -t souljapanic/telegraf .
 ```

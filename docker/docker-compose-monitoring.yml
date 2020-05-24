@@ -85,6 +85,16 @@ services:
     ports:
       - 9093:9093
 
+  telegraf:
+    image: souljapanic/telegraf
+    restart: always
+    networks:
+      - reddit
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9126:9126
+
 volumes:
   prometheus_data:
   grafana_data:
