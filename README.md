@@ -327,3 +327,125 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 * make push
 
 * build_and_push
+
+# monitoring-2
+
+## Создание окружения:
+
+* export GOOGLE_PROJECT=docker-275410
+
+* docker-machine create --driver google --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts --google-machine-type n1-standard-1 --google-zone europe-west1-b docker-host
+
+* eval $(docker-machine env docker-host)
+
+* gcloud compute firewall-rules create prometheus-default --allow tcp:9090 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create puma-default --allow tcp:9292 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create cadvisor-default --allow tcp:8080 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create grafana-default --allow tcp:3000 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create alertmanager-default --allow tcp:9093 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create metrics-default --allow tcp:9323 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create telegraf-default --allow tcp:9126 --target-tags=docker-machine
+
+* gcloud compute firewall-rules create stackdriver-default --allow tcp:9255 --target-tags=docker-machine
+
+* Создание сети:
+
+```
+docker network create reddit
+```
+
+## Описание файлов:
+
+* Файл с описание приложений: docker/docker-compose.yml
+
+* Файл с описанием мониторинга: docker/docker-compose-monitoring.yml
+
+## Сборка образа AlertManager:
+
+* cd monitoring/alertmanager
+
+* docker build --rm --no-cache -t souljapanic/alertmanager .
+
+## Ссылка на репозиторий:
+
+* https://hub.docker.com/u/souljapanic
+
+## Дополнительные задания:
+
+* Сборка Prometheus и Alertmanagers с помощью makefile:
+
+```
+cd monitoring && make build_and_push
+```
+
+* Настройка уведомления для процентиль:
+
+```
+cd prometheus
+
+alerts.yml - описание правил уведомления
+```
+
+* Сборка образа telegraf
+
+```
+cd monitoring/telegraf
+docker build --rm --no-cache -t souljapanic/telegraf .
+```
+
+* Сборка образа grafana с настроенными dashboards и datasources:
+
+```
+cd monitoring/grafana
+docker build --rm --no-cache -t souljapanic/grafana .
+
+dm.json - dashboard docker metrics prometheus
+
+telegraf.json - dashboard docker metrics telegraf
+
+blm.json - dashboard Business Logic Monitoring
+
+usm.json - dashboards UI Service Monitoring
+
+prometheus.yml - настройка datasource prometheus
+
+prometheus_dashboards.yml - dashboard provider
+```
+
+* Сборка stackdriver-exporter:
+
+```
+cd monitoring/stackdriver-exporter
+
+В контейнер подкладываем service_account от проекта в GCP и выполняем сборку (так делать нельзя, это для примера!)
+
+docker build --rm --no-cache -t souljapanic/stackdriver-exporter .
+
+Выполняется сбор следующих метрик:
+
+- compute.googleapis.com/instance/cpu
+- compute.googleapis.com/instance/disk
+
+За основу взят exporter: https://github.com/prometheus-community/stackdriver_exporter
+Пример метрик: https://cloud.google.com/monitoring/api/metrics
+```
+
+* Сборка trickster:
+
+```
+cd monitoring/trickster
+
+docker build --rm --no-cache -t souljapanic/trickster .
+
+Конфигураия trickster описана в файле trickster.conf, используется cache в памяти для prometheus
+
+Добавлен сбор метрик с trickster в prometheus
+
+В Grafana добавлен в provision доступ к prometheus через trickster
+```

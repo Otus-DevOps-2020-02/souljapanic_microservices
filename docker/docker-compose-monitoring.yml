@@ -1,0 +1,133 @@
+version: '3.3'
+
+services:
+
+  prometheus:
+    image: souljapanic/prometheus
+    restart: always
+    networks:
+      - reddit
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d'
+
+  node-exporter:
+    image: prom/node-exporter:v0.15.2
+    restart: always
+    networks:
+      - reddit
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+
+  mongodb-exporter:
+    image: souljapanic/mongodb_exporter
+    restart: always
+    networks:
+      - reddit
+    environment:
+      MONGODB_URI: "mongodb://mongo:27017"
+
+  blackbox-exporter:
+    image: souljapanic/blackbox
+    restart: always
+    networks:
+      - reddit
+    command:
+      - '--config.file=/config/blackbox.yml'
+
+  cadvisor:
+    image: google/cadvisor:v0.29.0
+    restart: always
+    networks:
+      - reddit
+    volumes:
+      - '/:/rootfs:ro'
+      - '/var/run:/var/run:rw'
+      - '/sys:/sys:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+    ports:
+      - '8080:8080'
+
+  grafana:
+    image: souljapanic/grafana
+    restart: always
+    networks:
+      - reddit
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+
+  alertmanager:
+    image: souljapanic/alertmanager
+    restart: always
+    networks:
+      - reddit
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+    ports:
+      - 9093:9093
+
+  telegraf:
+    image: souljapanic/telegraf
+    restart: always
+    networks:
+      - reddit
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9126:9126
+
+  stackdriver-exporter:
+    image: souljapanic/stackdriver-exporter
+    restart: always
+    networks:
+      - reddit
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: "/opt/docker-275410.json"
+      STACKDRIVER_EXPORTER_GOOGLE_PROJECT_ID: "docker-275410"
+      STACKDRIVER_EXPORTER_MONITORING_METRICS_TYPE_PREFIXES: "compute.googleapis.com/instance/cpu,compute.googleapis.com/instance/disk"
+      STACKDRIVER_EXPORTER_MONITORING_METRICS_INTERVAL: "1m"
+      STACKDRIVER_EXPORTER_MONITORING_METRICS_OFFSET: "0s"
+      STACKDRIVER_EXPORTER_WEB_LISTEN_ADDRESS: ":9255"
+      STACKDRIVER_EXPORTER_WEB_TELEMETRY_PATH: "/metrics"
+    ports:
+      - 9255:9255
+
+  trickster:
+    image: souljapanic/trickster
+    restart: always
+    networks:
+      - reddit
+    ports:
+      - 8480:8480
+      - 8481:8481
+    volumes:
+      - data_trickster:/data/trickster
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  data_trickster:
+
+networks:
+  reddit:
+    external:
+      name: reddit

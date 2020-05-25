@@ -7,3 +7,5 @@ docker/docker-monolith/infra/packer/variables.json
 src/.env
 machine-gitlab/terraform/.terraform
 docker/.env
+monitoring/mongodb_exporter
+monitoring/stackdriver-exporter/docker-275410.json
