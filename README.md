@@ -464,6 +464,18 @@ for i in ui post-py comment; do cd src/$i; bash docker_build.sh; cd -; done
 
 ```
 gcloud compute firewall-rules create tcp5601 --allow tcp:5601 --target-tags=docker-machine
+
 gcloud compute firewall-rules create tcp9292 --allow tcp:9292 --target-tags=docker-machine
+
 gcloud compute firewall-rules create tcp9411 --allow tcp:9411 --target-tags=docker-machine
+```
+
+## Сборка fluentd:
+
+```
+cd logging/fluentd
+
+export USER_NAME=souljapanic
+
+docker build -t $USER_NAME/fluentd .
 ```
