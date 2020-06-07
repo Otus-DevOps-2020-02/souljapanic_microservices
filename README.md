@@ -479,3 +479,13 @@ export USER_NAME=souljapanic
 
 docker build -t $USER_NAME/fluentd .
 ```
+
+## Запуск проекта:
+
+```
+cd docker
+
+docker-compose -f docker-compose-logging.yml up -d
+
+docker-compose up -d
+```
