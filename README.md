@@ -449,3 +449,13 @@ docker build --rm --no-cache -t souljapanic/trickster .
 
 В Grafana добавлен в provision доступ к prometheus через trickster
 ```
+
+# logging-1
+
+## Сборка образов приложения:
+
+```
+export USER_NAME=souljapanic
+
+for i in ui post-py comment; do cd src/$i; bash docker_build.sh; cd -; done
+```
