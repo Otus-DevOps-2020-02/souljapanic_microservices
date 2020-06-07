@@ -10,6 +10,10 @@ services:
 
   elasticsearch:
     image: elasticsearch:7.4.0
+    environment:
+      - cluster.name=docker-cluster
+      - node.name=node-1
+      - cluster.initial_master_nodes=node-1
     expose:
       - 9200
     ports:

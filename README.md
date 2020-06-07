@@ -485,6 +485,8 @@ docker build -t $USER_NAME/fluentd .
 ```
 cd docker
 
+sysctl -w vm.max_map_count=262144
+
 docker-compose -f docker-compose-logging.yml up -d
 
 docker-compose up -d
