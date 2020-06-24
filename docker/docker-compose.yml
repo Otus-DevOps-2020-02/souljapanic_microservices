@@ -27,6 +27,11 @@ services:
       - "${PUBLISH_PORT_UI}:${COMMENT_SERVICE_PORT}"
     depends_on:
       - mongo
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.ui
 
   post:
     image: souljapanic/post:${POST_VERSION}
