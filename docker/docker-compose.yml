@@ -23,6 +23,7 @@ services:
       POST_SERVICE_PORT: "${POST_SERVICE_PORT}"
       COMMENT_SERVICE_HOST: "${COMMENT_SERVICE_HOST}"
       COMMENT_SERVICE_PORT: "${COMMENT_SERVICE_PORT}"
+      ZIPKIN_ENABLED: "${ZIPKIN_ENABLED}"
     ports:
       - "${PUBLISH_PORT_UI}:${COMMENT_SERVICE_PORT}"
     depends_on:
@@ -43,6 +44,7 @@ services:
     environment:
       POST_DATABASE_HOST: "${POST_DATABASE_HOST}"
       POST_DATABASE: "${POST_DATABASE}"
+      ZIPKIN_ENABLED: "${ZIPKIN_ENABLED}"
     depends_on:
       - mongo
     logging:
@@ -62,6 +64,7 @@ services:
       APP_HOME: "${APP_HOME_COMMENT}"
       COMMENT_DATABASE_HOST: "${COMMENT_DATABASE_HOST}"
       COMMENT_DATABASE: "${COMMENT_DATABASE}"
+      ZIPKIN_ENABLED: "${ZIPKIN_ENABLED}"
     depends_on:
       - mongo
 
