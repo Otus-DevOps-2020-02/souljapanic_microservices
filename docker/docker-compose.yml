@@ -14,7 +14,7 @@ services:
           - ${COMMENT_DATABASE_HOST}
 
   ui:
-    image: souljapanic/ui
+    image: souljapanic/ui:${UI_VERSION}
     restart: always
     networks:
       - reddit
@@ -23,13 +23,19 @@ services:
       POST_SERVICE_PORT: "${POST_SERVICE_PORT}"
       COMMENT_SERVICE_HOST: "${COMMENT_SERVICE_HOST}"
       COMMENT_SERVICE_PORT: "${COMMENT_SERVICE_PORT}"
+      ZIPKIN_ENABLED: "${ZIPKIN_ENABLED}"
     ports:
       - "${PUBLISH_PORT_UI}:${COMMENT_SERVICE_PORT}"
     depends_on:
       - mongo
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.ui
 
   post:
-    image: souljapanic/post
+    image: souljapanic/post:${POST_VERSION}
     restart: always
     networks:
       reddit:
@@ -38,11 +44,17 @@ services:
     environment:
       POST_DATABASE_HOST: "${POST_DATABASE_HOST}"
       POST_DATABASE: "${POST_DATABASE}"
+      ZIPKIN_ENABLED: "${ZIPKIN_ENABLED}"
     depends_on:
       - mongo
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.post
 
   comment:
-    image: souljapanic/comment
+    image: souljapanic/comment:${COMMENT_VERSION}
     restart: always
     networks:
       reddit:
@@ -52,6 +64,7 @@ services:
       APP_HOME: "${APP_HOME_COMMENT}"
       COMMENT_DATABASE_HOST: "${COMMENT_DATABASE_HOST}"
       COMMENT_DATABASE: "${COMMENT_DATABASE}"
+      ZIPKIN_ENABLED: "${ZIPKIN_ENABLED}"
     depends_on:
       - mongo
 

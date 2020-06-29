@@ -449,3 +449,45 @@ docker build --rm --no-cache -t souljapanic/trickster .
 
 В Grafana добавлен в provision доступ к prometheus через trickster
 ```
+
+# logging-1
+
+## Сборка образов приложения:
+
+```
+export USER_NAME=souljapanic
+
+for i in ui post-py comment; do cd src/$i; bash docker_build.sh; cd -; done
+```
+
+## Настройка окружения в GCE:
+
+```
+gcloud compute firewall-rules create tcp5601 --allow tcp:5601 --target-tags=docker-machine
+
+gcloud compute firewall-rules create tcp9292 --allow tcp:9292 --target-tags=docker-machine
+
+gcloud compute firewall-rules create tcp9411 --allow tcp:9411 --target-tags=docker-machine
+```
+
+## Сборка fluentd:
+
+```
+cd logging/fluentd
+
+export USER_NAME=souljapanic
+
+docker build -t $USER_NAME/fluentd .
+```
+
+## Запуск проекта:
+
+```
+cd docker
+
+sysctl -w vm.max_map_count=262144
+
+docker-compose -f docker-compose-logging.yml up -d
+
+docker-compose up -d
+```
